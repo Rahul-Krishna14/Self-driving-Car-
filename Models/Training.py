@@ -7,36 +7,35 @@ Created on Sun Dec 20 12:04:29 2020
 from utils import *
 from sklearn.model_selection import train_test_split
 
-### load path where images are saved
+### loading IMG path
 path = r'D:\car simulator\data'
 
-#Calling ImageData function from utils
+# image fun from util 
 data = ImageData(path)
 
-## Normalizing the data
+# Normalizing
 data = normalizeData(data)
 
-#Storing the opp path and Steering angles to a array
+# loading IMG and steering angles 
 ImagePath, Steering_angle = LoadData(path, data)
 
-## Spliting the Data into train and Dev set
+## Splitting data
 Xtrain, Xdev, Ytrain, Ydev = train_test_split(ImagePath, Steering_angle, test_size = 0.1, random_state = 47)
 
-print(f'total train{len(Xtrain)}')
 
-## Calling the CNN model created from utils
+## Calling our CNN model built from util
 Model = CarSimulatorModel()
 
-## View the model
+## Model summary
 Model.summary()
 
-## Fitting the data into the model
+## Training model
 Model.fit(batch(Xtrain, Ytrain, 50, 1), steps_per_epoch = 200, epochs = 10, validation_data=batch(Xdev,Ydev,50,0),validation_steps = 200)
 
 
 #batch(Xtrain, Ytrain, 10, 1) ###test 
 
-## Saving the trained weights into a h5file so that it can be used in application
+## Saving model weights as h5 file so it can be used in other applications
 Model.save(r'D:\car simulator\data\car_simulatorModel.h5')
 
 print("Model Save complete")
